@@ -23,13 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 function saveToGitHub($latitude, $longitude) {
-    $url = 'https://api.github.com/repos/username/repo/contents/locations.json'; // Ganti dengan URL yang sesuai
+    $url = 'https://api.github.com/repos/Alpin83/ngetes/contents/locations.json'; // Ganti dengan URL yang sesuai
     $data = json_encode(['message' => 'Add location', 'content' => base64_encode(json_encode(['latitude' => $latitude, 'longitude' => $longitude]))]);
 
     $options = [
         'http' => [
             'header'  => "Content-type: application/json\r\n" .
-                         "Authorization: token YOUR_GITHUB_TOKEN\r\n" . // Ganti dengan token GitHub Anda
+                         "Authorization: token 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\r\n" . // Ganti dengan token GitHub Anda
                          "User -Agent: PHP\r\n",
             'method'  => 'PUT',
             'content' => $data,
