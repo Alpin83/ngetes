@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $to = "alfinabn1211@example.com"; // Ganti dengan email Anda
     $subject = "Lokasi Pengguna";
     $message = "Latitude: " . $latitude . "\nLongitude: " . $longitude;
-    $headers = "From: alfinabn1211@gmail.com"; // Ganti dengan alamat email yang valid
+    $headers = "From: "; // Ganti dengan alamat email yang valid
 
     if (mail($to, $subject, $message, $headers)) {
         echo "Lokasi berhasil dikirim.";
