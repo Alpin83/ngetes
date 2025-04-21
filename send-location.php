@@ -3,19 +3,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
 
-    // Simpan atau kirim lokasi ke email Anda
-    // Contoh: Mengirim email
-    $to = "alfinabn1211@example.com"; // Ganti dengan email Anda
+    // Ganti dengan alamat email Anda
+    $to = "alfinabn1211@example.com"; 
     $subject = "Lokasi Pengguna";
     $message = "Latitude: " . $latitude . "\nLongitude: " . $longitude;
-    $headers = "From: "; // Ganti dengan alamat email yang valid
+    $headers = "From: your_email@example.com"; // Ganti dengan alamat email yang valid
 
+    // Mengirim email
     if (mail($to, $subject, $message, $headers)) {
-        echo "Lokasi berhasil dikirim.";
+        echo "Lokasi berhasil dikirim ke email.";
     } else {
         echo "Gagal mengirim lokasi.";
     }
+
+    // Menyimpan lokasi ke GitHub
+    saveToGitHub($latitude, $longitude);
 } else {
     echo "Tidak ada data yang diterima.";
+}
+
+function saveToGitHub($latitude, $longitude) {
+    $url = 'https://api.github.com/repos/username/repo/contents/locations.json'; // Ganti dengan URL yang sesuai
+    $data = json_encode(['message' => 'Add location', 'content' => base64_encode(json_encode(['latitude' => $latitude, 'longitude' => $longitude]))]);
+
+    $options = [
+        'http' => [
+            'header'  => "Content-type: application/json\r\n" .
+                         "Authorization: token YOUR_GITHUB_TOKEN\r\n" . // Ganti dengan token GitHub Anda
+                         "User -Agent: PHP\r\n",
+            'method'  => 'PUT',
+            'content' => $data,
+        ],
+    ];
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    if ($result === FALSE) {
+        echo "Gagal menyimpan lokasi ke GitHub.";
+    } else {
+        echo "Lokasi berhasil disimpan ke GitHub.";
+    }
 }
 ?>
